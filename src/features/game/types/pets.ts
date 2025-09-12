@@ -93,6 +93,7 @@ export type Pet = {
       [date: string]: number;
     };
   };
+  fetches?: Partial<Record<PetResourceName, number>>; // Fetch yields
   energy: number;
   experience: number;
   pettedAt: number;
@@ -316,14 +317,16 @@ export type PetShrineName =
   | "Boar Shrine" // Cooking
   | "Sparrow Shrine" // Crops
   | "Toucan Shrine" // Fruit
-  | "Collie Shrine" // Animals
+  | "Collie Shrine" // Barn Animals
   | "Badger Shrine" // Trees & Stones
   | "Stag Shrine" // Oil
   | "Mole Shrine" // Crimstone, Gold & Iron
   | "Bear Shrine" // Honey
   | "Tortoise Shrine" // Greenhouse + Crop Machine
   | "Moth Shrine" // Flower
-  | "Legendary Shrine"; // Bonus yields
+  | "Legendary Shrine" // Bonus yields
+  | "Bantam Shrine" // Chickens
+  | "Trading Shrine"; // Trading
 
 export type PetShrine = Omit<Decoration, "name"> & {
   name: PetShrineName;
@@ -447,6 +450,16 @@ export const PET_SHRINES: Record<PetShrineName, CraftableCollectible> = {
     },
     inventoryLimit: 1,
   },
+  "Bantam Shrine": {
+    description: "",
+    coins: 0,
+    ingredients: {
+      Acorn: new Decimal(15),
+      Ruffroot: new Decimal(10),
+      Dewberry: new Decimal(10),
+    },
+    inventoryLimit: 1,
+  },
   "Legendary Shrine": {
     description: "",
     coins: 0,
@@ -454,6 +467,16 @@ export const PET_SHRINES: Record<PetShrineName, CraftableCollectible> = {
       Obsidian: new Decimal(1),
       Moonfur: new Decimal(10),
       Acorn: new Decimal(10),
+    },
+    inventoryLimit: 1,
+  },
+  "Trading Shrine": {
+    description: "",
+    coins: 0,
+    ingredients: {
+      Acorn: new Decimal(15),
+      Moonfur: new Decimal(5),
+      Obsidian: new Decimal(3),
     },
     inventoryLimit: 1,
   },
@@ -549,9 +572,9 @@ export function getPetRequests(): CookableName[] {
 }
 
 export const PET_REQUEST_XP: Record<PetRequestDifficulty, number> = {
-  easy: 75,
+  easy: 50,
   medium: 100,
-  hard: 125,
+  hard: 150,
 };
 
 export function getPetRequestXP(food: CookableName) {

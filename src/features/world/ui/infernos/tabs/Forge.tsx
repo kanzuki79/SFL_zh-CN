@@ -84,7 +84,12 @@ export const Forge: React.FC = () => {
             details={{
               item: selectedResource,
             }}
-            boost={COLLECTIBLE_BUFF_LABELS(state)[selectedResource]}
+            boost={
+              COLLECTIBLE_BUFF_LABELS({
+                skills: state.bumpkin.skills,
+                collectibles: state.collectibles,
+              })[selectedResource]
+            }
             requirements={
               forgingSoon
                 ? undefined
@@ -104,6 +109,7 @@ export const Forge: React.FC = () => {
                   lessIngredients() ||
                   lessFunds()
                 }
+                divClassName="flex-row sm:flex-col"
               >
                 {t("forge")}
               </ConfirmButton>
@@ -147,6 +153,7 @@ export const Forge: React.FC = () => {
               <span>
                 {t("upgrade.success.description", {
                   resource: selectedResource,
+                  action: selectedResource.includes("Tree") ? "chop" : "mine",
                 })}
               </span>
               <Button onClick={() => setShowSuccess(false)}>
